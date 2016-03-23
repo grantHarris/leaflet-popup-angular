@@ -1,0 +1,31 @@
+{
+   "name": "leaflet-popup-angular",
+   "label": {
+      "en": "leaflet-popup-angular"
+   },
+   "language": "JavaScript",
+   "version": "0.0.1",
+   "description": "Allows for the use of AngularJS in leaflet popups",
+   "repository": {
+      "type": "git",
+      "url": "git@github.com:grantHarris/leaflet-popup-angular.git"
+   },
+   "license": "MIT",
+   "keywords": [
+      "gis",
+      "map",
+      "angular",
+      "leaflet"
+   ],
+   "main": "src/L.Popup.Angular.js",
+   "dependencies": {
+      "leaflet": "*",
+      "angular": "*"
+   },
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/grantHarris/leaflet-popup-angular"
+   },
+   "devDependencies": {
+   }
+}
