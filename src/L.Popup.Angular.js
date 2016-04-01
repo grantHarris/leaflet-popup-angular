@@ -1,5 +1,5 @@
  'use strict';
-
+ 
  L.Popup.Angular = L.Popup.extend({
     _initLayout: function () {
         var that = this;
@@ -19,7 +19,7 @@
 
              if (that.options.controller) {
                  var controller = $controller(that.options.controller, {
-                     '$map': map,
+                     '$map': that._map,
                      '$scope': that._scope,
                      '$element': that._element,
                      '$options': that.options
@@ -41,7 +41,7 @@
         if (!this._content) { return; }
 
         if (typeof this._content === 'string') {
-            //this._contentNode.innerHTML = this._content;
+            //this._contentNode.innerHTML = 'this._content';
         } else {
             while (this._contentNode.hasChildNodes()) {
                 this._contentNode.removeChild(this._contentNode.firstChild);
@@ -54,7 +54,7 @@
         if(this._scope){
             this._scope.$destroy();
         }
-        L.Popup.prototype.onRemove.call(map);
+        L.Popup.prototype.onRemove.call(this, map);
      }
  });
 
