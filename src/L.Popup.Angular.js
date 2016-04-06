@@ -2,52 +2,47 @@
  
  L.Popup.Angular = L.Popup.extend({
     _initLayout: function () {
-        var that = this;
         L.Popup.prototype._initLayout.call(this);
+         var $injector = angular.element(document).injector();
 
-        angular.element(document).ready(function() {
-             // Grab the injector for the current angular app
-             var $injector = angular.element(document).injector();
+         var $rootScope = $injector.get('$rootScope'),
+             $compile = $injector.get('$compile'),
+             $controller = $injector.get('$controller');
 
-             var $rootScope = $injector.get('$rootScope'),
-                 $compile = $injector.get('$compile'),
-                 $controller = $injector.get('$controller');
+         this._scope = $rootScope.$new(true);
+         this._element = angular.element(this._contentNode);
+         this._element.html(this.options.template);
 
-             that._scope = $rootScope.$new(true);
-             that._element = angular.element(that._contentNode);
-             that._element.html(that.options.template);
+         if (this.options.controller) {
+             var controller = $controller(this.options.controller, {
+                 '$map': this._map,
+                 '$scope': this._scope,
+                 '$element': this._element,
+                 '$options': this.options
+             });
 
-             if (that.options.controller) {
-                 var controller = $controller(that.options.controller, {
-                     '$map': that._map,
-                     '$scope': that._scope,
-                     '$element': that._element,
-                     '$options': that.options
-                 });
-
-                 if (that.options.controllerAs) {
-                     that._scope[that.options.controllerAs] = controller;
-                 }
-
-                 that._element.data('$ngControllerController', controller);
-                 that._element.children().data('$ngControllerController', controller);
+             if (this.options.controllerAs) {
+                 this._scope[this.options.controllerAs] = controller;
              }
 
-             $compile(that._element)(that._scope);
-             that._scope.$apply();
-         });
+             this._element.data('$ngControllerController', controller);
+             this._element.children().data('$ngControllerController', controller);
+         }
+
+         $compile(this._element)(this._scope);
+         this._scope.$apply();
     },
     _updateContent: function () {
         if (!this._content) { return; }
 
-        if (typeof this._content === 'string') {
-            //this._contentNode.innerHTML = 'this._content';
-        } else {
-            while (this._contentNode.hasChildNodes()) {
-                this._contentNode.removeChild(this._contentNode.firstChild);
+        if (typeof this._content === 'string' || typeof this._content === 'object') {
+            if (this.options.controllerAs) {
+                 this._scope[this.options.controllerAs].$content = this._content;
+            }else{
+                this._scope.$content = this._content;
             }
-            this._contentNode.appendChild(this._content);
-        }
+            this._scope.$apply();
+        } 
         this.fire('contentupdate');
     },
      onRemove: function(map){

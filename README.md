@@ -10,14 +10,17 @@
 			<div>
 				<h1>{{popup.title}}</h1>
 				My custom popup
-				<div ng-transclude></div>
+				<div>{{popup.content.name}}</div>
+				<div>{{popup.content.title}}</div>
 			</div>
 		`,
 		controllerAs: 'popup',
 		controller: function($map, $options){
 			this.title = 'Hello';
 		}
-	}).setLatLng(latlng)
-	    .setContent('<p>Hello world!<br />This is a nice popup.</p>')
+	}).setLatLng(latlng).setContent({
+	    	'name': 'foo',
+	    	'title': 'bar'
+	    })
 	    .openOn(map);
 ```
