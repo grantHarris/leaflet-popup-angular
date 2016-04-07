@@ -1,8 +1,9 @@
  'use strict';
- 
+
  L.Popup.Angular = L.Popup.extend({
-    _initLayout: function () {
-        L.Popup.prototype._initLayout.call(this);
+     _initLayout: function() {
+         L.Popup.prototype._initLayout.call(this);
+         var that = this;
          var $injector = angular.element(document).injector();
 
          var $rootScope = $injector.get('$rootScope'),
@@ -13,12 +14,20 @@
          this._element = angular.element(this._contentNode);
          this._element.html(this.options.template);
 
+         this._$content = {
+             _callbacks: [],
+             on: function(callback) {
+                 that._$content._callbacks.push(callback);
+             }
+         };
+
          if (this.options.controller) {
              var controller = $controller(this.options.controller, {
                  '$map': this._map,
                  '$scope': this._scope,
                  '$element': this._element,
-                 '$options': this.options
+                 '$options': this.options,
+                 '$content': this._$content
              });
 
              if (this.options.controllerAs) {
@@ -31,25 +40,29 @@
 
          $compile(this._element)(this._scope);
          this._scope.$apply();
-    },
-    _updateContent: function () {
-        if (!this._content) { return; }
+     },
+     _updateContent: function() {
+         if (!this._content) {
+             return;
+         }
 
-        if (typeof this._content === 'string' || typeof this._content === 'object') {
-            if (this.options.controllerAs) {
-                 this._scope[this.options.controllerAs].$content = this._content;
-            }else{
-                this._scope.$content = this._content;
-            }
+         if (typeof this._content === 'string' || typeof this._content === 'object') {
+            var that = this;
+            this._$content._callbacks.map(function(cb){
+                cb(that._content);
+            });
             this._scope.$apply();
-        } 
-        this.fire('contentupdate');
-    },
-     onRemove: function(map){
-        if(this._scope){
-            this._scope.$destroy();
-        }
-        L.Popup.prototype.onRemove.call(this, map);
+            this._scope.$evalAsync(function() {
+                 that._adjustPan();
+            });
+         }
+         this.fire('contentupdate');
+     },
+     onRemove: function(map) {
+         if (this._scope) {
+             this._scope.$destroy();
+         }
+         L.Popup.prototype.onRemove.call(this, map);
      }
  });
 
