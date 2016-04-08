@@ -1,7 +1,6 @@
 # leaflet-popup-angular
 
-(March 23, 2016) Note: This package is under active development and is not functional yet.
-
+0.0.2	-	First working version
 ## Usage
 
 ```
