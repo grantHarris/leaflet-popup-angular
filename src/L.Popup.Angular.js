@@ -1,11 +1,46 @@
  'use strict';
 
  L.Popup.Angular = L.Popup.extend({
-     _initLayout: function() {
-         L.Popup.prototype._initLayout.call(this);
+     onAdd: function(map) {
+         this._map = map;
+
+         if (!this._container) {
+             this._initLayout();
+         }
+
+         //Angular magic
+         this._compile();
+
+         var animFade = map.options.fadeAnimation;
+
+         if (animFade) {
+             L.DomUtil.setOpacity(this._container, 0);
+         }
+         map._panes.popupPane.appendChild(this._container);
+
+         map.on(this._getEvents(), this);
+
+         this.update();
+
+         if (animFade) {
+             L.DomUtil.setOpacity(this._container, 1);
+         }
+
+         this.fire('open');
+
+         map.fire('popupopen', {
+             popup: this
+         });
+
+         if (this._source) {
+             this._source.fire('popupopen', {
+                 popup: this
+             });
+         }
+     },
+     _compile: function() {
          var that = this;
          var $injector = angular.element(document).injector();
-
          var $rootScope = $injector.get('$rootScope'),
              $compile = $injector.get('$compile'),
              $controller = $injector.get('$controller');
@@ -47,21 +82,22 @@
          }
 
          if (typeof this._content === 'string' || typeof this._content === 'object') {
-            var that = this;
-            this._$content._callbacks.map(function(cb){
-                cb(that._content);
-            });
-            this._scope.$apply();
-            this._scope.$evalAsync(function() {
+             var that = this;
+             this._$content._callbacks.map(function(callback) {
+                 callback(that._content);
+             });
+             this._scope.$apply();
+             this._scope.$evalAsync(function() {
                  that._adjustPan();
-            });
+                 this.fire('contentupdate');
+             });
          }
-         this.fire('contentupdate');
      },
      onRemove: function(map) {
          if (this._scope) {
              this._scope.$destroy();
          }
+         this._$content._callbacks = [];
          L.Popup.prototype.onRemove.call(this, map);
      }
  });
