@@ -21,7 +21,7 @@
 		controller: function($map, $options, $content){
 			this.hello = 'Hello';
 			$content.on(function(content){
-				console.log('This executes on setContent', content)
+				console.log('This executes on setContent', content);
 			});
 		}
 	}).setLatLng(latlng).setContent({
