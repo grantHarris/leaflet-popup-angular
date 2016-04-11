@@ -8,8 +8,6 @@
              this._initLayout();
          }
 
-         //Angular magic
-         this._compile();
 
          var animFade = map.options.fadeAnimation;
 
@@ -19,7 +17,10 @@
          map._panes.popupPane.appendChild(this._container);
 
          map.on(this._getEvents(), this);
-
+         
+         //Angular magic
+         this._compile();
+         
          this.update();
 
          if (animFade) {
@@ -27,7 +28,7 @@
          }
 
          this.fire('open');
-
+         
          map.fire('popupopen', {
              popup: this
          });
@@ -86,10 +87,17 @@
              this._$content._callbacks.map(function(callback) {
                  callback(that._content);
              });
+
+             if (this.options.controllerAs) {
+                 this._scope[this.options.controllerAs].$content = this._content;
+             } else {
+                 this._scope.$content = this._content;
+             }
+
              this._scope.$apply();
              this._scope.$evalAsync(function() {
                  that._adjustPan();
-                 this.fire('contentupdate');
+                 that.fire('contentupdate');
              });
          }
      },
