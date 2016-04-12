@@ -53,6 +53,6 @@ See working [examples](http://grantharris.github.io/leaflet-popup-angular/exampl
 ## Dependency Injection
 In addition to the rest of your Angular application's services, L.popup.angular also provides several of its own services through dependency injection to the controller.
 
-* $content: Content object. Register callbacks for setContent() with $content.on()
-* $map: Leaflet map object
-* $options: The options params from L.popup.angular.
+* __$content__ Content object. Register callbacks for setContent() with $content.on()
+* __$map__ Leaflet map object
+* __$options__ The options params from L.popup.angular.
