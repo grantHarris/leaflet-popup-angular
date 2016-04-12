@@ -1,12 +1,10 @@
-# leaflet-popup-angular
-
-0.0.3	-	API finalized. Update Readme to reflect correct way to use.
-0.0.2	-	First working version
+# leaflet-popup-angular 0.1.0
 
 ## Usage
 
-### Standard
+Also see /examples
 
+### Standard
 ```
 	var popup = L.popup.angular({
 		template: `
