@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <title>Leaflet Control Angular</title>
+        <meta name='viewport' content='width=device-width, user-scalable=no initial-scale=1, maximum-scale=1'>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+        <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet-src.js"></script>
+        <script type="text/javascript">
+            angular.module('app', []);
+            angular.module('app').factory('ExampleService', function(){
+                this.message = 'Try clicking around!';
+                return this;
+            });
+        </script>
+        <script src="../src/L.Popup.Angular.js"></script>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+        <style type="text/css">
+            body {
+                margin: 0;
+            }
+            #map {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script type="text/javascript">
+            var map = L.map('map').setView([51.505, -0.09], 13);
+
+            var welcomePopup = L.popup.angular({
+				template: `
+					<div>
+						<h3>leaflet-popup-angular</h3>
+						<div>
+							Welcome! {{welcome.message}}
+						</div>
+					</div>
+				`,
+				controllerAs: 'welcome',
+				controller: ['ExampleService', function(ExampleService){
+					/*
+						Any Angular service can be injected into the popup.
+					*/
+					this.message = ExampleService.message;
+				}]
+			});
+
+			L.marker([51.5, -0.09]).addTo(map)
+				.bindPopup(welcomePopup).openPopup();
+
+
+            var interactionPopup = L.popup.angular({
+				template: `
+					<div>
+						<div>
+							The leaflet map is injected into the controller as $map. 
+							We can access the properties and methods leaflet provides in our controller.
+						</div>
+						<div>
+							<h5>Current Zoom Level: {{popup.zoom}}</h5>
+							<button ng-click="popup.zoomIn()">Zoom In</button> <button ng-click="popup.zoomOut()">Zoom Out</button>
+						</div>
+					</div>
+				`,
+				controllerAs: 'popup',
+				controller: ['$map', function($map){
+					var that = this;
+
+					this.zoom = $map.getZoom();
+
+					this.zoomIn = function(){
+						$map.zoomIn();
+						that.zoom = $map.getZoom();
+					};
+
+					this.zoomOut = function(){
+						$map.zoomOut();
+						that.zoom = $map.getZoom();
+					};
+				}]
+			});
+
+			L.polygon([
+				[51.509, -0.08],
+				[51.503, -0.06],
+				[51.51, -0.047]
+			]).addTo(map).bindPopup(interactionPopup);
+
+
+            var noControllerPopup = L.popup.angular({
+				template: `
+					<div>
+						<div>
+							This popup does not need a controller. {{$content}}
+						</div>
+					</div>
+				`,
+			}).setContent('But we still have an Angular layout.')
+
+			L.circle([51.508, -0.11], 500, {
+				color: 'red',
+				fillColor: '#f03',
+				fillOpacity: 0.5
+			}).addTo(map).bindPopup(noControllerPopup);
+
+
+			var setContentPopup = L.popup.angular({
+				template: `
+					<div>
+						<div>
+							The popup can use content from setContent through the $content variable.
+						</div>
+						<div>
+							<strong>{{popup.$content}}</strong>
+						</div>
+					</div>
+				`,
+				controllerAs: 'popup',
+				controller: ['$content', function($content){
+					/*
+						Callbacks can also be registered. 
+						Callbacks are executed on each call to setContent
+					*/
+					$content.on(function(content){
+						console.log('The popup content:', content);
+					});
+				}]
+			});
+
+			function onMapClick(e) {
+				setContentPopup
+					.setLatLng(e.latlng)
+					.setContent("You clicked the map at " + e.latlng.toString())
+					.openOn(map);
+			}
+
+			map.on('click', onMapClick);
+
+	        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+	            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	        }).addTo(map);
+
+        </script>
+    </body>
+</html>
