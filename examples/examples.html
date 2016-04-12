@@ -31,7 +31,7 @@
             var map = L.map('map').setView([51.505, -0.09], 13);
 
             var welcomePopup = L.popup.angular({
-				template: `
+                template: `
 					<div>
 						<h3>leaflet-popup-angular</h3>
 						<div>
@@ -39,21 +39,21 @@
 						</div>
 					</div>
 				`,
-				controllerAs: 'welcome',
-				controller: ['ExampleService', function(ExampleService){
-					/*
+                controllerAs: 'welcome',
+                controller: ['ExampleService', function(ExampleService) {
+                    /*
 						Any Angular service can be injected into the popup.
 					*/
-					this.message = ExampleService.message;
-				}]
-			});
+                    this.message = ExampleService.message;
+                }]
+            });
 
-			L.marker([51.5, -0.09]).addTo(map)
-				.bindPopup(welcomePopup).openPopup();
+            L.marker([51.5, -0.09]).addTo(map)
+                .bindPopup(welcomePopup).openPopup();
 
 
             var interactionPopup = L.popup.angular({
-				template: `
+                template: `
 					<div>
 						<div>
 							The leaflet map is injected into the controller as $map. 
@@ -65,50 +65,33 @@
 						</div>
 					</div>
 				`,
-				controllerAs: 'popup',
-				controller: ['$map', function($map){
-					var that = this;
+                controllerAs: 'popup',
+                controller: ['$map', function($map) {
+                    var that = this;
 
-					this.zoom = $map.getZoom();
+                    this.zoom = $map.getZoom();
 
-					this.zoomIn = function(){
-						$map.zoomIn();
-						that.zoom = $map.getZoom();
-					};
+                    this.zoomIn = function() {
+                        $map.zoomIn();
+                        that.zoom = $map.getZoom();
+                    };
 
-					this.zoomOut = function(){
-						$map.zoomOut();
-						that.zoom = $map.getZoom();
-					};
-				}]
-			});
+                    this.zoomOut = function() {
+                        $map.zoomOut();
+                        that.zoom = $map.getZoom();
+                    };
+                }]
+            });
 
-			L.polygon([
-				[51.509, -0.08],
-				[51.503, -0.06],
-				[51.51, -0.047]
-			]).addTo(map).bindPopup(interactionPopup);
-
-
-            var noControllerPopup = L.popup.angular({
-				template: `
-					<div>
-						<div>
-							This popup does not need a controller. {{$content}}
-						</div>
-					</div>
-				`,
-			}).setContent('But we still have an Angular layout.')
-
-			L.circle([51.508, -0.11], 500, {
-				color: 'red',
-				fillColor: '#f03',
-				fillOpacity: 0.5
-			}).addTo(map).bindPopup(noControllerPopup);
+            L.polygon([
+                [51.509, -0.08],
+                [51.503, -0.06],
+                [51.51, -0.047]
+            ]).addTo(map).bindPopup(interactionPopup);
 
 
-			var setContentPopup = L.popup.angular({
-				template: `
+            var setContentPopup = L.popup.angular({
+                template: `
 					<div>
 						<div>
 							The popup can use content from setContent through the $content variable.
@@ -118,31 +101,47 @@
 						</div>
 					</div>
 				`,
-				controllerAs: 'popup',
-				controller: ['$content', function($content){
-					/*
+                controllerAs: 'popup',
+                controller: ['$content', function($content) {
+                    /*
 						Callbacks can also be registered. 
 						Callbacks are executed on each call to setContent
 					*/
-					$content.on(function(content){
-						console.log('The popup content:', content);
-					});
-				}]
-			});
+                    $content.on(function(content) {
+                        console.log('The popup content:', content);
+                    });
+                }]
+            });
 
-			function onMapClick(e) {
-				setContentPopup
-					.setLatLng(e.latlng)
-					.setContent("You clicked the map at " + e.latlng.toString())
-					.openOn(map);
-			}
+            function onMapClick(e) {
+                setContentPopup
+                    .setLatLng(e.latlng)
+                    .setContent("You clicked the map at " + e.latlng.toString())
+                    .openOn(map);
+            }
 
-			map.on('click', onMapClick);
+            map.on('click', onMapClick);
 
-	        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-	            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-	        }).addTo(map);
+            var noControllerPopup = L.popup.angular({
+                template: `
+					<div>
+						<div>
+							This popup does not need a controller. {{$content}}
+						</div>
+					</div>
+				`,
+            }).setContent('But we still have an Angular layout.');
 
+            L.circle([51.508, -0.11], 500, {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5
+            }).addTo(map).bindPopup(noControllerPopup);
+
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
         </script>
     </body>
 </html>
