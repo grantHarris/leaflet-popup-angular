@@ -1,5 +1,5 @@
 # leaflet-popup-angular 0.1.0
-
+Use AngularJS in your Leaflet popups. 
 ## Usage
 
 Also see /examples
