@@ -2,6 +2,7 @@
 
  L.Popup.Angular = L.Popup.extend({
      onAdd: function(map) {
+
          this._map = map;
 
          if (!this._container) {
@@ -17,27 +18,31 @@
          map._panes.popupPane.appendChild(this._container);
 
          map.on(this._getEvents(), this);
-         
-         //Angular magic
-         this._compile();
-         
-         this.update();
 
-         if (animFade) {
-             L.DomUtil.setOpacity(this._container, 1);
-         }
-
-         this.fire('open');
+         var that = this;
          
-         map.fire('popupopen', {
-             popup: this
-         });
+         angular.element(document).ready(function() {
+             //Angular magic
+             that._compile();
+             
+             that.update();
 
-         if (this._source) {
-             this._source.fire('popupopen', {
-                 popup: this
+             if (animFade) {
+                 L.DomUtil.setOpacity(that._container, 1);
+             }
+
+             that.fire('open');
+             
+             map.fire('popupopen', {
+                 popup: that
              });
-         }
+
+             if (that._source) {
+                 that._source.fire('popupopen', {
+                     popup: that
+                 });
+             }
+        });
      },
      _compile: function() {
          var that = this;
