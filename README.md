@@ -17,12 +17,12 @@ See working [examples](http://grantharris.github.io/leaflet-popup-angular/exampl
 			</div>
 		`,
 		controllerAs: 'popup',
-		controller: function($map, $options, $content){
+		controller: ['$content', function($content){
 			this.hello = 'Hello';
 			$content.on(function(content){
 				console.log('This executes on setContent', content);
 			});
-		}
+		}]
 	}).setLatLng(latlng).setContent({
 	    	'name': 'foo',
 	    	'title': 'bar'
@@ -49,3 +49,10 @@ See working [examples](http://grantharris.github.io/leaflet-popup-angular/exampl
 	    })
 	    .openOn(map);
 ```
+
+## Dependency Injection
+In addition to the rest of your Angular application's services, L.popup.angular also provides several of its own services through dependency injection to the controller.
+
+* $content: Content object. Register callbacks for setContent() with $content.on()
+* $map: Leaflet map object
+* $options: The options params from L.popup.angular.
