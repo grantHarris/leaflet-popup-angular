@@ -110,7 +110,10 @@
          if (this._scope) {
              this._scope.$destroy();
          }
-         this._$content._callbacks = [];
+         if(this._$content){
+            this._$content._callbacks = [];
+         }
+         
          L.Popup.prototype.onRemove.call(this, map);
      }
  });
