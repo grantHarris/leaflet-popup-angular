@@ -1,10 +1,11 @@
 # leaflet-popup-angular 0.1.0
 Use AngularJS in your Leaflet popups. 
+
+See working [examples](http://grantharris.github.io/leaflet-popup-angular/examples/examples.html).
+
 ## Usage
 
-Also see /examples
-
-### Standard
+### Basic
 ```
 	var popup = L.popup.angular({
 		template: `
