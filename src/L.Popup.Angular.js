@@ -64,9 +64,8 @@
 
          if (this.options.controller) {
              var controller = $controller(this.options.controller, {
-                 '$map': this._map,
                  '$scope': this._scope,
-                 '$element': this._element,
+                 '$map': this._map,
                  '$options': this.options,
                  '$content': this._$content
              });
