@@ -60,16 +60,14 @@
 							We can access the properties and methods leaflet provides in our controller.
 						</div>
 						<div>
-							<h5>Current Zoom Level: {{popup.zoom}}</h5>
-							<button ng-click="popup.zoomIn()">Zoom In</button> <button ng-click="popup.zoomOut()">Zoom Out</button>
+							<button ng-click="popup.zoomIn()">Zoom In</button> <button ng-click="popup.zoomOut()">Zoom Out</button> 
+							<strong ng-show="popup.zoom">Level: {{popup.zoom}}</strong>
 						</div>
 					</div>
 				`,
                 controllerAs: 'popup',
                 controller: ['$map', function($map) {
                     var that = this;
-
-                    this.zoom = $map.getZoom();
 
                     this.zoomIn = function() {
                         $map.zoomIn();
