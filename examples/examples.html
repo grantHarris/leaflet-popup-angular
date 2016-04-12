@@ -126,11 +126,11 @@
                 template: `
 					<div>
 						<div>
-							This popup does not need a controller. {{$content}}
+							This popup does not have a controller. {{$content}}
 						</div>
 					</div>
 				`,
-            }).setContent('But we still have an Angular layout.');
+            }).setContent('But we can still use templates and $content.');
 
             L.circle([51.508, -0.11], 500, {
                 color: 'red',
@@ -141,7 +141,7 @@
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
-            
+
         </script>
     </body>
 </html>
