@@ -50,6 +50,21 @@ See working [examples](http://grantharris.github.io/leaflet-popup-angular/exampl
 	    .openOn(map);
 ```
 
+#### Note
+
+Note: For clarity, these examples are using template literals to represent multiline strings.
+Template literals are part of ES6 and are not supported by some browsers (notably IE).
+See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+
+This is a new package. We will be introducing support for angular's templateUrl soon 
+and the examples will be reimplemented using this feature.
+
+For production use at this time, either:
+* Use a bundler like webpack to insert the html into your template: template-- require('template.html')
+* Use template literals and a tool like babel to compile down to ES5
+* Use oldschool JavaScript strings in place-- template: '<div></div>'
+
+
 ## Dependency Injection
 In addition to the rest of your Angular application's services, L.popup.angular also provides several of its own services through dependency injection to the controller.
 
