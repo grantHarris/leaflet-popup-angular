@@ -62,7 +62,7 @@ and the examples will be reimplemented using this feature.
 For production use at this time, either:
 * Use a bundler like webpack to insert the html into your template-- template: require('template.html')
 * Use template literals and a tool like babel to compile down to ES5
-* Use oldschool JavaScript strings in place-- template: '<div></div>'
+* Use oldschool JavaScript strings in place of template literals
 
 
 ## Dependency Injection
