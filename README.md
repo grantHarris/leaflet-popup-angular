@@ -52,7 +52,7 @@ See working [examples](http://grantharris.github.io/leaflet-popup-angular/exampl
 
 #### Note
 
-Note: For clarity, these examples are using template literals to represent multiline strings.
+For clarity, these examples are using template literals to represent multiline strings.
 Template literals are part of ES6 and are not supported by some browsers (notably IE).
 See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
 
