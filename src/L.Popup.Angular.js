@@ -2,22 +2,15 @@
 
  L.Popup.Angular = L.Popup.extend({
      onAdd: function(map) {
-
-         this._map = map;
+         this._zoomAnimated = this._zoomAnimated && this.options.zoomAnimation;
 
          if (!this._container) {
              this._initLayout();
          }
 
-
-         var animFade = map.options.fadeAnimation;
-
-         if (animFade) {
+         if (map._fadeAnimated) {
              L.DomUtil.setOpacity(this._container, 0);
          }
-         map._panes.popupPane.appendChild(this._container);
-
-         map.on(this._getEvents(), this);
 
          var that = this;
          
@@ -25,22 +18,19 @@
              //Angular magic
              that._compile();
              
+             clearTimeout(that._removeTimeout);
+             that.getPane().appendChild(that._container);
              that.update();
 
-             if (animFade) {
+             if (map._fadeAnimated) {
                  L.DomUtil.setOpacity(that._container, 1);
              }
 
-             that.fire('open');
-             
-             map.fire('popupopen', {
-                 popup: that
-             });
+             map.fire('popupopen', {popup: that});
 
              if (that._source) {
-                 that._source.fire('popupopen', {
-                     popup: that
-                 });
+                 that._source.fire('popupopen', {popup: that}, true);
+                 that._source.on('preclick', L.DomEvent.stopPropagation);
              }
         });
      },
@@ -81,13 +71,16 @@
          $compile(this._element)(this._scope);
          this._scope.$apply();
      },
-     _updateContent: function() {
-         if (!this._content) {
+     update: function() {
+         if (!(this._map && this._content)) {
              return;
          }
 
          if (typeof this._content === 'string' || typeof this._content === 'object') {
              var that = this;
+
+             this._container.style.visibility = 'hidden';
+
              this._$content._callbacks.map(function(callback) {
                  callback(that._content);
              });
@@ -100,8 +93,13 @@
 
              this._scope.$apply();
              this._scope.$evalAsync(function() {
-                 that._adjustPan();
                  that.fire('contentupdate');
+                 that._updateLayout();
+                 that._updatePosition();
+
+                 that._container.style.visibility = '';
+
+                 that._adjustPan();
              });
          }
      },
