@@ -3,6 +3,8 @@ Use AngularJS in your Leaflet popups. Extends the built-in L.popup.
 
 Supports Leaflet [v1.0.0-rc.1](https://github.com/Leaflet/Leaflet/tree/v1.0.0-rc.1)
 
+For Leaflet 0.7.7 support see [leaflet-popup-angular v0.1.2](https://github.com/grantHarris/leaflet-popup-angular/tree/v0.1.2)
+
 See working [examples](http://grantharris.github.io/leaflet-popup-angular/examples/examples.html).
 
 ## Usage
