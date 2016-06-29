@@ -72,15 +72,15 @@
          this._scope.$apply();
      },
      update: function() {
-         if (!(this._map && this._content)) {
+         if (!this._map) {
              return;
          }
 
-         if (typeof this._content === 'string' || typeof this._content === 'object') {
-             var that = this;
+         var that = this;
 
-             this._container.style.visibility = 'hidden';
+         this._container.style.visibility = 'hidden';
 
+         if (this._scope) {
              this._$content._callbacks.map(function(callback) {
                  callback(that._content);
              });
