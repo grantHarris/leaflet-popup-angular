@@ -4,8 +4,7 @@
       "en": "leaflet-popup-angular"
    },
    "language": "JavaScript",
-   "version": "0.1.2",
-   "version": "1.0.0-rc.1",
+   "version": "1.0.0",
    "description": "Allows for the use of AngularJS in leaflet popups",
    "repository": {
       "type": "git",
@@ -20,7 +19,7 @@
    ],
    "main": "src/L.Popup.Angular.js",
    "dependencies": {
-      "leaflet": "~1.0.0-rc.1",
+      "leaflet": "~1.0.0",
       "angular": "~1.5.7"
    },
    "repository": {
