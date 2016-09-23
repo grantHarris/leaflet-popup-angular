@@ -36,7 +36,7 @@
      },
      _compile: function() {
          var that = this;
-         var $injector = angular.element(document).injector();
+         var $injector = angular.element(document.querySelectorAll('[ng-app]')).injector();
          var $rootScope = $injector.get('$rootScope'),
              $compile = $injector.get('$compile'),
              $controller = $injector.get('$controller');

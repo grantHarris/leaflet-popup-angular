@@ -1,6 +1,9 @@
 leaflet-popup-angular Changelog
 =================
 
+## 1.0.1
+- Fixed issue where the app wasn't selecting the injector properly.
+
 ## 1.0.0
 - Version numbers updated.
 - Bower.json added.
