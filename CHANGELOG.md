@@ -1,6 +1,9 @@
 leaflet-popup-angular Changelog
 =================
 
+## 1.0.1
+- Update example
+
 ## 1.0.2
 - Fix zooming issue with release version of Leaflet 1.0.0.
 - Better support injector selection.
