@@ -2,22 +2,13 @@
 
  L.Popup.Angular = L.Popup.extend({
      onAdd: function(map) {
-         this._zoomAnimated = this._zoomAnimated && this.options.zoomAnimation;
 
-         if (!this._container) {
-             this._initLayout();
-         }
-
-         if (map._fadeAnimated) {
-             L.DomUtil.setOpacity(this._container, 0);
-         }
-
+         L.DivOverlay.prototype.onAdd.call(this, map);
          var that = this;
-         
+
          angular.element(document).ready(function() {
-             //Angular magic
              that._compile();
-             
+
              clearTimeout(that._removeTimeout);
              that.getPane().appendChild(that._container);
              that.update();
@@ -26,17 +17,32 @@
                  L.DomUtil.setOpacity(that._container, 1);
              }
 
-             map.fire('popupopen', {popup: that});
+             map.fire('popupopen', {
+                 popup: that
+             });
 
              if (that._source) {
-                 that._source.fire('popupopen', {popup: that}, true);
-                 that._source.on('preclick', L.DomEvent.stopPropagation);
+                 that._source.fire('popupopen', {
+                     popup: that
+                 }, true);
+                 if (!(that._source instanceof L.Path)) {
+                     that._source.on('preclick', L.DomEvent.stopPropagation);
+                 }
              }
-        });
+         });
      },
      _compile: function() {
          var that = this;
-         var $injector = angular.element(document.querySelectorAll('[ng-app]')).injector();
+         var $injector = angular.element(document).injector();
+
+         if (!$injector) {
+             $injector = angular.element(document.querySelectorAll('[ng-app]')).injector();
+         }
+
+         if (!$injector) {
+             throw "L.Popup.Angular can't find your Angular app";
+         }
+
          var $rootScope = $injector.get('$rootScope'),
              $compile = $injector.get('$compile'),
              $controller = $injector.get('$controller');
@@ -107,10 +113,10 @@
          if (this._scope) {
              this._scope.$destroy();
          }
-         if(this._$content){
-            this._$content._callbacks = [];
+         if (this._$content) {
+             this._$content._callbacks = [];
          }
-         
+
          L.Popup.prototype.onRemove.call(this, map);
      }
  });

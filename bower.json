@@ -1,7 +1,7 @@
 {
   "name": "leaflet-popup-angular",
-  "version": "1.0.1",
-  "description": "JavaScript library for mobile-friendly interactive maps",
+  "version": "1.0.2",
+  "description": "Allows for the use of AngularJS in leaflet popups.",
   "devDependencies": {
   },
   "main": "src/L.Popup.Angular.js",
